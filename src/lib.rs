@@ -38,6 +38,18 @@ impl Angle {
         Angle { value: normalized }
     }
 
+    /// Create a new [`Angle`] from degrees.
+    ///
+    /// ```
+    /// # use radian::Angle;
+    /// # use core::f64::consts::PI;
+    /// let angle = Angle::from_degrees(180.0);
+    /// assert_eq!(angle.radians(), PI);
+    /// ```
+    pub fn from_degrees(degrees: f64) -> Angle {
+        Angle::new(degrees.to_radians())
+    }
+
     /// Get the angle in radians.
     ///
     /// ```
@@ -223,6 +235,23 @@ impl Angle {
         return (self.value.cos(), self.value.sin());
         #[cfg(feature = "libm")]
         return (libm::cos(self.value), libm::sin(self.value));
+    }
+
+    /// Create an angle from a unit vector (x, y).
+    ///
+    /// ```
+    /// # use radian::Angle;
+    /// # use core::f64::consts::{PI, SQRT_2};
+    /// # use approx::assert_relative_eq;
+    /// let angle = Angle::from_unit_vector(SQRT_2 / 2.0, SQRT_2 / 2.0);
+    /// assert_relative_eq!(angle.radians(), PI / 4.0);
+    /// ```
+    #[cfg(any(feature = "std", feature = "libm"))]
+    pub fn from_unit_vector(x: f64, y: f64) -> Angle {
+        #[cfg(feature = "std")]
+        return Angle::new(y.atan2(x));
+        #[cfg(feature = "libm")]
+        return Angle::new(libm::atan2(y, x));
     }
 }
 

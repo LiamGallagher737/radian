@@ -91,6 +91,20 @@ impl Angle {
         }
     }
 
+    /// Get the difference between this angle and another one.
+    ///
+    /// ```
+    /// # use radian::Angle;
+    /// # use core::f64::consts::PI;
+    /// let a = Angle::new(-PI / 2.0);
+    /// let b = Angle::new(PI / 2.0);
+    /// assert_eq!(a.difference(&b).radians(), PI);
+    /// ```
+    #[inline(always)]
+    pub fn difference(&self, other: &Self) -> Self {
+        Angle::new(other.value - self.value)
+    }
+
     /// Get the absolute distance between this angle and another one.
     ///
     /// ```
@@ -98,11 +112,37 @@ impl Angle {
     /// # use core::f64::consts::PI;
     /// let a = Angle::new(-PI);
     /// let b = Angle::new(PI / 2.0);
-    /// assert_eq!(a.abs_distance(&b).radians(), PI / 2.0);
+    /// assert_eq!(a.distance(&b).radians(), PI / 2.0);
     /// ```
     #[inline(always)]
-    pub fn abs_distance(&self, other: &Self) -> Self {
+    pub fn distance(&self, other: &Self) -> Self {
         Angle::new(self.value - other.value).abs()
+    }
+
+    /// Check if this angle is in a clockwise driection from another one.
+    ///
+    /// ```
+    /// # use radian::Angle;
+    /// # use core::f64::consts::PI;
+    /// let a = Angle::new(PI);
+    /// let b = Angle::new(PI / 2.0);
+    /// assert!(a.is_clockwise_to(&b));
+    /// ```
+    pub fn is_clockwise_to(&self, other: &Self) -> bool {
+        self.difference(other).value < 0.0
+    }
+
+    /// Check if this angle is in a counterclockwise driection from another one.
+    ///
+    /// ```
+    /// # use radian::Angle;
+    /// # use core::f64::consts::PI;
+    /// let a = Angle::new(PI / 2.0);
+    /// let b = Angle::new(PI);
+    /// assert!(a.is_counterclockwise_to(&b));
+    /// ```
+    pub fn is_counterclockwise_to(&self, other: &Self) -> bool {
+        self.difference(other).value > 0.0
     }
 
     /// Clamp the angle to a given range.
@@ -124,6 +164,22 @@ impl Angle {
         }
     }
 
+    /// Interpolate between this angle and another by a given factor (t).
+    ///
+    /// ```
+    /// # use radian::Angle;
+    /// # use core::f64::consts::PI;
+    /// let a = Angle::new(0.0);
+    /// let b = Angle::new(PI);
+    /// let interpolated = a.lerp(&b, 0.5);
+    /// assert_eq!(interpolated.radians(), PI / 2.0);
+    /// ```
+    pub fn lerp(&self, other: &Self, t: f64) -> Angle {
+        assert!(0.0 <= t && t <= 1.0, "t must be between 0.0 and 1.0");
+        let difference = self.difference(other);
+        Angle::new(self.value + difference.value * t)
+    }
+
     /// Get the opposite angle (add π).
     ///
     /// ```
@@ -134,6 +190,20 @@ impl Angle {
     /// ```
     pub fn opposite(&self) -> Angle {
         Angle::new(self.value + PI)
+    }
+
+    /// Find the midpoint angle between this angle and another one.
+    ///
+    /// ```
+    /// # use radian::Angle;
+    /// # use core::f64::consts::PI;
+    /// let a = Angle::new(0.0);
+    /// let b = Angle::new(PI);
+    /// assert_eq!(a.midpoint(&b).radians(), PI / 2.0);
+    /// ```
+    pub fn midpoint(&self, other: &Self) -> Self {
+        let diff = self.difference(other).value;
+        Angle::new(self.value + diff / 2.0)
     }
 
     /// Get the unit vector of this angle defined as (cos(θ), sin(θ)).

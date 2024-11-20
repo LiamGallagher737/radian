@@ -175,7 +175,7 @@ impl Angle {
     /// assert_eq!(interpolated.radians(), PI / 2.0);
     /// ```
     pub fn lerp(&self, other: &Self, t: f64) -> Angle {
-        assert!(0.0 <= t && t <= 1.0, "t must be between 0.0 and 1.0");
+        assert!((0.0..=1.0).contains(&t), "t must be between 0.0 and 1.0");
         let difference = self.difference(other);
         Angle::new(self.value + difference.value * t)
     }

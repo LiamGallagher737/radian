@@ -12,7 +12,8 @@ use serde::{Deserialize, Serialize};
 mod ops;
 
 /// A wrapper around a `f64` angle that is guaranteed to always be normalized.
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Angle {
     value: f64,
 }

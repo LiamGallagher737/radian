@@ -22,7 +22,7 @@ serde = ["dep:serde"]
 libm = { version = "0.2", optional = true }
 ufmt = { version = "0.2", optional = true }
 ufloat = { version = "0.1", optional = true }
-serde = { version = "1.0.219", features = ["derive"] , optional = true}
+serde = { version = "1.0.219", features = ["derive"], optional = true }
 
 [dev-dependencies]
 approx = "0.5"

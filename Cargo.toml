@@ -12,7 +12,7 @@ authors = ["Liam Gallagher <liam@liamgallagher.dev>"]
 exclude = [".github", "flake.*"]
 
 [features]
-default = ["std", "ufmt", "serde"]
+default = ["std", "ufmt"]
 std = []
 libm = ["dep:libm"]
 ufmt = ["dep:ufmt", "dep:ufloat"]

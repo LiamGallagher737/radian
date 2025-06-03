@@ -7,6 +7,7 @@ compile_error!("The `std` and `libm` features may not both be enabled simultaneo
 
 use core::{f64::consts::PI, fmt::Display};
 
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
 mod ops;

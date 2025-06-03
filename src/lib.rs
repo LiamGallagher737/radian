@@ -7,10 +7,12 @@ compile_error!("The `std` and `libm` features may not both be enabled simultaneo
 
 use core::{f64::consts::PI, fmt::Display};
 
+use serde::{Deserialize, Serialize};
+
 mod ops;
 
 /// A wrapper around a `f64` angle that is guaranteed to always be normalized.
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Serialize, Deserialize)]
 pub struct Angle {
     value: f64,
 }
